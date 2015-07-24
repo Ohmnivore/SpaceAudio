@@ -1,8 +1,8 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from play import *
-import time
 import util
+from timer import *
 
 class Controls:
     def __init__(self, mainwin):
@@ -13,7 +13,7 @@ class Controls:
         self.curplaying = 0
         self.curproc = None
 
-        self.start = None
+        self.timer = Timer()
         self.loop = QTimer()
         self.loop.timeout.connect(self.update_elapsed)
         self.loop.start(1000)
@@ -29,6 +29,7 @@ class Controls:
         self.table.customContextMenuRequested.connect(self.open_menu)
         self.mainwin.ui.PreviousTrack.pressed.connect(self.previous_track)
         self.mainwin.ui.NextTrack.pressed.connect(self.next_track)
+        self.mainwin.ui.PlayPause.pressed.connect(self.toggle_play)
 
     def chose_tracks(self):
         self.curlist = []
@@ -62,9 +63,19 @@ class Controls:
         self.playlist = self.curlist[:]
         self.play()
 
+    def toggle_play(self):
+        # print('toggle')
+        if self.timer.paused:
+            self.mainwin.ui.TrackName.setText(self.playlist[self.curplaying].title)
+            self.mainwin.ui.TrackLength.setText(util.min_to_string(self.playlist[self.curplaying].length))
+            self.curproc = Play(self.playlist[self.curplaying].path, self.play_next, self.timer.elapsed)
+        else:
+            self.stop()
+        self.timer.toggle()
+
     def play(self):
         self.stop()
-        self.start = time.time()
+        self.timer.reset()
         self.mainwin.ui.TrackName.setText(self.playlist[self.curplaying].title)
         self.mainwin.ui.TrackLength.setText(util.min_to_string(self.playlist[self.curplaying].length))
         self.curproc = Play(self.playlist[self.curplaying].path, self.play_next)
@@ -95,7 +106,4 @@ class Controls:
         self.play()
 
     def update_elapsed(self):
-        if self.start != None:
-            end = time.time()
-            diff = end - self.start
-            self.mainwin.ui.ElapsedTime.setText(util.min_to_string(diff))
+        self.mainwin.ui.ElapsedTime.setText(util.min_to_string(self.timer.elapsed))
