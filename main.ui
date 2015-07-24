@@ -143,14 +143,14 @@
             <item>
              <widget class="QLabel" name="ElapsedTime">
               <property name="text">
-               <string>Elapsed Time</string>
+               <string>0:00</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QLabel" name="TrackLength">
               <property name="text">
-               <string>Track Length</string>
+               <string>0:00</string>
               </property>
              </widget>
             </item>
