@@ -72,6 +72,8 @@ class Ui_MainWindow(object):
         self.TrackName.setObjectName("TrackName")
         self.verticalLayout_2.addWidget(self.TrackName)
         self.TrackSlider = QtWidgets.QSlider(self.centralwidget)
+        self.TrackSlider.setMaximum(1000)
+        self.TrackSlider.setPageStep(1)
         self.TrackSlider.setOrientation(QtCore.Qt.Horizontal)
         self.TrackSlider.setObjectName("TrackSlider")
         self.verticalLayout_2.addWidget(self.TrackSlider)
