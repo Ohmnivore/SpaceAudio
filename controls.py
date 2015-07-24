@@ -12,10 +12,11 @@ class Controls:
         self.curlist = []
         self.curplaying = 0
         self.curproc = None
+        self.volume = 1
 
         self.timer = Timer()
         self.loop = QTimer()
-        self.loop.timeout.connect(self.update_elapsed)
+        self.loop.timeout.connect(self.update)
         self.loop.start(1000)
 
         self.hook_ui()
@@ -68,7 +69,7 @@ class Controls:
         if self.timer.paused:
             self.mainwin.ui.TrackName.setText(self.playlist[self.curplaying].title)
             self.mainwin.ui.TrackLength.setText(util.min_to_string(self.playlist[self.curplaying].length))
-            self.curproc = Play(self.playlist[self.curplaying].path, self.play_next, self.timer.elapsed)
+            self.curproc = Play(self.playlist[self.curplaying].path, self.play_next, self.timer.elapsed, self.volume)
         else:
             self.stop()
         self.timer.toggle()
@@ -78,7 +79,7 @@ class Controls:
         self.timer.reset()
         self.mainwin.ui.TrackName.setText(self.playlist[self.curplaying].title)
         self.mainwin.ui.TrackLength.setText(util.min_to_string(self.playlist[self.curplaying].length))
-        self.curproc = Play(self.playlist[self.curplaying].path, self.play_next)
+        self.curproc = Play(self.playlist[self.curplaying].path, self.play_next, 0, self.volume)
 
     def stop(self):
         if self.curproc != None:
@@ -105,5 +106,12 @@ class Controls:
         self.stop()
         self.play()
 
-    def update_elapsed(self):
+    def update(self):
         self.mainwin.ui.ElapsedTime.setText(util.min_to_string(self.timer.elapsed))
+        volume = self.mainwin.ui.VolumeSlider.value() / 100.0
+        if len(self.playlist) > 0 and self.volume != volume:
+            self.volume = volume
+            self.stop()
+            self.mainwin.ui.TrackName.setText(self.playlist[self.curplaying].title)
+            self.mainwin.ui.TrackLength.setText(util.min_to_string(self.playlist[self.curplaying].length))
+            self.curproc = Play(self.playlist[self.curplaying].path, self.play_next, self.timer.elapsed, self.volume)
