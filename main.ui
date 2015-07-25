@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>SpaceAudio</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
@@ -104,21 +107,27 @@
         <item>
          <widget class="QPushButton" name="PreviousTrack">
           <property name="text">
-           <string>Previous Track</string>
+           <string/>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="PlayPause">
           <property name="text">
-           <string>Play/Pause</string>
+           <string/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>64</width>
+            <height>64</height>
+           </size>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="NextTrack">
           <property name="text">
-           <string>Next Track</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -166,6 +175,9 @@
         </item>
         <item>
          <widget class="QSlider" name="VolumeSlider">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="maximum">
            <number>100</number>
           </property>

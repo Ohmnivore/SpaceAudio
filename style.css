@@ -1,0 +1,100 @@
+#TrackLength {
+    qproperty-alignment: AlignRight;
+}
+#TrackName {
+    qproperty-alignment: AlignCenter;
+}
+
+QMainWindow {
+    background: @cgrey;
+    qproperty-windowIcon: url(assets/icon.png);
+}
+
+QPushButton {
+	background-color: #1d1d1d;
+	color: white;
+	border: none;
+    height: 64px;
+
+	font-weight: bold;
+	font-size:14px;
+}
+
+QLabel {
+    color: white;
+    font-weight: bold;
+	font-size:14px;
+    font-family: Gisha;
+}
+
+QSlider::groove:horizontal {
+    border: 1px solid #bbb;
+    background: white;
+    height: 10px;
+    border-radius: 4px;
+}
+QSlider::groove:vertical {
+    border: 1px solid #bbb;
+    background: white;
+    width: 10px;
+    border-radius: 4px;
+}
+#TrackSlider::sub-page {
+    background: @cpurple;
+    border: none;
+    height: 8px;
+}
+#TrackSlider::add-page {
+    background: @cgreylight;
+    border: none;
+    height: 8px;
+}
+#TrackSlider::handle {
+    width: 0px;
+    height: 0px;
+}
+#VolumeSlider::sub-page {
+    background: @cgreylight;
+    border: none;
+    width: 8px;
+}
+#VolumeSlider::add-page {
+    background: @cpurple;
+    border: none;
+    width: 8px;
+}
+#VolumeSlider::handle {
+    background: @cblue;
+    width: 8px;
+    height: 20px;
+    margin-left: -1px;
+    margin-right: -1px;
+}
+
+#PreviousTrack, #NextTrack {
+    width: 64px;
+    background-color: @corange;
+}
+#PreviousTrack:hover, #NextTrack:hover {
+    background-color: @cyellow;
+}
+#PreviousTrack:pressed, #NextTrack:pressed {
+    background-color: @corange;
+}
+#NextTrack {
+    border-image: url(assets/img/appbar.navigate.next.png);
+}
+#PreviousTrack {
+    border-image: url(assets/img/appbar.navigate.previous.png);
+}
+
+#PlayPause {
+    width: 64px;
+    background-color: @cpurple;
+}
+#PlayPause:hover {
+    background-color: @cblue;
+}
+#PlayPause:pressed {
+    background-color: @cpurple;
+}

@@ -1,9 +1,8 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
-from play import *
+from ffmpeg import *
 import util
-from timer import *
 
 class Controls:
     def __init__(self, mainwin):
@@ -12,15 +11,14 @@ class Controls:
         self.playlist = []
         self.curlist = []
         self.curplaying = 0
-        self.curproc = None
-        self.volume = 1
+        self.player = Ffmpeg()
 
-        self.timer = Timer()
         self.loop = QTimer()
         self.loop.timeout.connect(self.update)
         self.loop.start(33)
 
         self.hook_ui()
+        self.mainwin.ui.PlayPause.setIcon(QIcon('assets/img/appbar.control.play.png'))
 
     def on_close(self):
         self.stop()
@@ -70,41 +68,32 @@ class Controls:
         s = self.mainwin.ui.TrackSlider
         x = s.mapFromGlobal(QCursor.pos()).x()
         y = s.mapFromGlobal(QCursor.pos()).y()
-        if x >= 0 and y >= 0 and x <= s.width() and y <= s.height() and (QApplication.mouseButtons() & Qt.LeftButton):
+        if len(self.playlist) > 0 and x >= 0 and y >= 0 and x <= s.width() and y <= s.height() and (QApplication.mouseButtons() & Qt.LeftButton):
             new_x = QStyle.sliderValueFromPosition(s.minimum(), s.maximum(), x, s.width())
             old_v = s.value()
             if old_v != new_x:
                 s.setValue(new_x)
-                # self.delta += new_x - old_v
-                self.timer.set(new_x / s.maximum() * self.playlist[self.curplaying].length)
-                self.pre_play()
-                self.curproc = Play(self.playlist[self.curplaying].path, self.play_next, self.timer.elapsed, self.volume)
+                self.player.seek(new_x / s.maximum() * self.playlist[self.curplaying].length)
 
     def toggle_play(self):
-        if self.timer.paused:
-            self.pre_play()
-            self.curproc = Play(self.playlist[self.curplaying].path, self.play_next, self.timer.elapsed, self.volume)
-            self.timer.paused = False
+        if len(self.playlist) > 0:
+            self.player.toggle_play()
+        if self.player.timer.paused:
+            self.mainwin.ui.PlayPause.setIcon(QIcon('assets/img/appbar.control.play.png'))
         else:
-            self.stop()
-            self.timer.paused = True
-
-    def pre_play(self):
-        self.stop()
-        self.timer.paused = False
-        self.mainwin.ui.TrackName.setText(self.playlist[self.curplaying].title)
-        self.mainwin.ui.TrackLength.setText(util.min_to_string(self.playlist[self.curplaying].length))
+            self.mainwin.ui.PlayPause.setIcon(QIcon('assets/img/appbar.control.pause.png'))
 
     def play(self):
-        self.pre_play()
-        self.timer.reset()
-        self.curproc = Play(self.playlist[self.curplaying].path, self.play_next, 0, self.volume)
+        self.mainwin.ui.PlayPause.setIcon(QIcon('assets/img/appbar.control.pause.png'))
+        if len(self.playlist) > 0:
+            self.player.timer.reset()
+            self.mainwin.ui.TrackName.setText(self.playlist[self.curplaying].title)
+            self.mainwin.ui.TrackLength.setText(util.min_to_string(self.playlist[self.curplaying].length))
+            self.player.play(self.playlist[self.curplaying], self.play_next, 0)
 
     def stop(self):
-        if self.curproc != None:
-            self.start = None
-            self.curproc.kill()
-            self.curproc = None
+        self.mainwin.ui.PlayPause.setIcon(QIcon('assets/img/appbar.control.play.png'))
+        self.player.stop()
 
     def play_next(self):
         self.curplaying += 1
@@ -128,15 +117,11 @@ class Controls:
     def update(self):
         # Elapsed label
         if len(self.playlist) > 0:
-            self.mainwin.ui.ElapsedTime.setText(util.min_to_string(self.timer.elapsed))
+            self.mainwin.ui.ElapsedTime.setText(util.min_to_string(self.player.timer.elapsed))
         # Volume code
         volume = self.mainwin.ui.VolumeSlider.value() / 100.0
-        if len(self.playlist) > 0 and self.volume != volume:
-            self.volume = volume
-            self.stop()
-            self.mainwin.ui.TrackName.setText(self.playlist[self.curplaying].title)
-            self.mainwin.ui.TrackLength.setText(util.min_to_string(self.playlist[self.curplaying].length))
-            self.curproc = Play(self.playlist[self.curplaying].path, self.play_next, self.timer.elapsed, self.volume)
+        if len(self.playlist) > 0 and self.player.volume != volume:
+            self.player.set_volume(volume)
         # Animate track progress slider
         if len(self.playlist) > 0:
-            self.mainwin.ui.TrackSlider.setValue(float(self.timer.elapsed) * float(self.mainwin.ui.TrackSlider.maximum()) / float(self.playlist[self.curplaying].length))
+            self.mainwin.ui.TrackSlider.setValue(float(self.player.timer.elapsed) * float(self.mainwin.ui.TrackSlider.maximum()) / float(self.playlist[self.curplaying].length))
