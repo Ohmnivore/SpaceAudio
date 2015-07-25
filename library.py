@@ -19,6 +19,8 @@ class Library(QMainWindow):
         self.model = None
         self.show_tree()
 
+        self.ui.Tree.header().hide()
+
     def hook_buttons(self):
         self.ui.Cancel.pressed.connect(self.close)
         self.ui.Ok.pressed.connect(self.do_scan)

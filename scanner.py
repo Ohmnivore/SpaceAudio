@@ -27,7 +27,8 @@ class Scanner:
 
 class FileData(Track):
     def __init__(self, path, db_t, db_a, db_alb):
-        super.__init__()
+        super().__init__()
+        self.path = path
         self.db_t = db_t
         self.db_a = db_a
         self.db_alb = db_alb

@@ -11,13 +11,19 @@ QMainWindow {
 }
 
 QPushButton {
-    background-color: #1d1d1d;
+    background-color: @cpurple;
     color: white;
     border: none;
-    height: 64px;
+    height: 48px;
 
     font-weight: bold;
     font-size:14px;
+}
+QPushButton:hover {
+    background-color: @cblue;
+}
+QPushButton:pressed {
+    background-color: @cgrey;
 }
 
 QLabel {
@@ -27,13 +33,13 @@ QLabel {
     font-family: Gisha;
 }
 
-QSlider::groove:horizontal {
+#TrackSlider::groove:horizontal {
     border: 1px solid #bbb;
     background: white;
     height: 10px;
     border-radius: 4px;
 }
-QSlider::groove:vertical {
+#VolumeSlider::groove:vertical {
     border: 1px solid #bbb;
     background: white;
     width: 10px;
@@ -74,6 +80,7 @@ QSlider::groove:vertical {
 
 #PreviousTrack, #NextTrack {
     width: 64px;
+    height: 64px;
     background-color: @corange;
 }
 #PreviousTrack:hover, #NextTrack:hover {
@@ -91,6 +98,7 @@ QSlider::groove:vertical {
 
 #PlayPause {
     width: 64px;
+    height: 64px;
     background-color: @cpurple;
 }
 #PlayPause:hover {
@@ -98,4 +106,14 @@ QSlider::groove:vertical {
 }
 #PlayPause:pressed {
     background-color: @cpurple;
+}
+
+/* Popups */
+QTreeView {
+    border: none;
+}
+QTreeView::QHeaderView {
+    width: 0px;
+    height: 0px;
+    border: 0px;
 }

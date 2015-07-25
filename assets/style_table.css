@@ -3,7 +3,7 @@ QTableView {
     border: none;
     color: white;
     font-weight: bold;
-    font-size:14px;
+    font-size:12px;
     font-family: Gisha;
 }
 QTableView::item:hover {

@@ -23,6 +23,10 @@ class MainWindow(QMainWindow):
         self.db_alb = db_alb
         self.refresh_lists()
 
+        self.ui.TrackTable.setColumnWidth(0, 312)
+        self.ui.TrackTable.setColumnWidth(1, 156)
+        self.ui.TrackTable.setColumnWidth(2, 156)
+
     def closeEvent(self, event):
         self.controls.on_close()
 
