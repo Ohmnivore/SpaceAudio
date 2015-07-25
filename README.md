@@ -1,3 +1,6 @@
+# Source code
+[https://github.com/Ohmnivore/SpaceAudio](https://github.com/Ohmnivore/SpaceAudio)
+
 # This is a WIP
 
 # TODO
@@ -8,8 +11,4 @@
 * Add tag support for other formats
 * Remove from library menu option
 * Open arbitrary files
-* About/Source Code/Contact popups
 * In table select, account for sorting
-
-# TODO (styling)
-* Popups

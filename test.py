@@ -1,5 +1,7 @@
 import os
 
+os.system('pandoc README.md -o README.html')
+
 root_dir = '.'
 for dir_name, subdir_list, file_list in os.walk(root_dir):
     for fname in file_list:

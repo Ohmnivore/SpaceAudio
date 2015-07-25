@@ -1,6 +1,8 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
 from library import *
+from popup import *
 from controls import *
 from track import *
 from ui_main import Ui_MainWindow
@@ -34,6 +36,51 @@ class MainWindow(QMainWindow):
         self.ui.actionManage_Library.triggered.connect(self.show_library_manager)
         self.ui.actionRescan_Library.triggered.connect(self.scan)
         self.ui.actionRescan_Library_Full.triggered.connect(self.hard_scan)
+        self.ui.actionAbout.triggered.connect(self.show_about)
+        self.ui.actionHelp.triggered.connect(self.show_help)
+        self.ui.actionReport_Issue.triggered.connect(self.show_report)
+        self.ui.actionContact.triggered.connect(self.show_contact)
+
+    def show_about(self):
+        about = Popup(self)
+        about.setWindowTitle('About')
+        about.ui.Text.setText(self.add_style_color(open('README.html', 'r').read()))
+        about.show()
+    def add_style_color(self, html):
+        i = 0
+        while i < len(html) - 1:
+            if html[i] == '<' and html[i + 1] == 'a':
+                html = html[:i + 2] +  ' style="color:#ecb447;"' + html[i + 2:]
+            i += 1
+        return html
+
+    def show_help(self):
+        about = Popup(self)
+        about.setWindowTitle('Help')
+        about.ui.Text.setText("""
+            Check out our wiki: <a href="https://github.com/Ohmnivore/SpaceAudio/wiki" style="color:#ecb447;">https://github.com/Ohmnivore/SpaceAudio/wiki</a>
+        """)
+        about.show()
+
+    def show_report(self):
+        about = Popup(self)
+        about.setWindowTitle('Report Issue')
+        about.ui.Text.setText("""
+            Please submit your issue to the GitHub tracker: <a href=https://github.com/Ohmnivore/SpaceAudio/issues style="color:#ecb447;">https://github.com/Ohmnivore/SpaceAudio/issues</a>
+            <br/><br/>
+            Do not hesitate, for every issue resolved brings us closer to world domination.
+        """)
+        about.show()
+
+    def show_contact(self):
+        about = Popup(self)
+        about.setWindowTitle('Contact')
+        about.ui.Text.setText("""
+            Email: markbeiline@gmail.com <br/>
+            Twitter: <a href="https://twitter.com/4_AM_Games" style="color:#ecb447;">@4_AM_Games</a> <br/>
+            Website: <a href="http://fouramgames.com/" style="color:#ecb447;">http://fouramgames.com/</a>
+        """)
+        about.show()
 
     def show_library_manager(self):
         self.lib = Library(self.db_p, self.db_t, self.db_a, self.db_alb, self)
