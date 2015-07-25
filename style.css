@@ -6,24 +6,24 @@
 }
 
 QMainWindow {
-    background: @cgrey;
+    background: @cgreylight;
     qproperty-windowIcon: url(assets/icon.png);
 }
 
 QPushButton {
-	background-color: #1d1d1d;
-	color: white;
-	border: none;
+    background-color: #1d1d1d;
+    color: white;
+    border: none;
     height: 64px;
 
-	font-weight: bold;
-	font-size:14px;
+    font-weight: bold;
+    font-size:14px;
 }
 
 QLabel {
     color: white;
     font-weight: bold;
-	font-size:14px;
+    font-size:14px;
     font-family: Gisha;
 }
 
@@ -45,7 +45,7 @@ QSlider::groove:vertical {
     height: 8px;
 }
 #TrackSlider::add-page {
-    background: @cgreylight;
+    background: @cgrey;
     border: none;
     height: 8px;
 }
@@ -54,7 +54,7 @@ QSlider::groove:vertical {
     height: 0px;
 }
 #VolumeSlider::sub-page {
-    background: @cgreylight;
+    background: @cgrey;
     border: none;
     width: 8px;
 }
@@ -69,6 +69,7 @@ QSlider::groove:vertical {
     height: 20px;
     margin-left: -1px;
     margin-right: -1px;
+    margin-top: -1px;
 }
 
 #PreviousTrack, #NextTrack {

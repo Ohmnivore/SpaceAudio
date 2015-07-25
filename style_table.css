@@ -1,0 +1,30 @@
+QTableView {
+    background: @cgrey;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size:14px;
+    font-family: Gisha;
+}
+QTableView::item:hover {
+    border: 0px;
+    background: @cyellow;
+    color: white;
+}
+QTableView::item:selected {
+    border: 0px;
+    background: @corange;
+    color: white;
+}
+
+QHeaderView::section {
+    background: @corange;
+    border: 4px solid @corange;
+    color: white;
+    font-weight: bold;
+    font-size:14px;
+    font-family: Gisha;
+}
+QHeaderView::down-arrow, QHeaderView::up-arrow {
+    image: none;
+}

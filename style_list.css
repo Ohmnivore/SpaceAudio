@@ -1,0 +1,88 @@
+QListView {
+    background: @cgrey;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size:14px;
+    font-family: Gisha;
+}
+QListView::item:hover {
+    border: 0px;
+    background: @cyellow;
+    color: white;
+}
+QListView::item:selected {
+    border: 0px;
+    background: @corange;
+    color: white;
+}
+
+QScrollBar:horizontal {
+    border: none;
+    background: @cgrey;
+    height: 16px;
+    margin: 0px;
+}
+QScrollBar::handle:horizontal {
+    border: none;
+    background: @cpurple;
+    min-width: 24px;
+}
+QScrollBar::add-line:horizontal {
+    border: none;
+    background: @cgrey;
+    width: 24px;
+    subcontrol-position: right;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:horizontal {
+    border: none;
+    background: @cgrey;
+    width: 24px;
+    subcontrol-position: left;
+    subcontrol-origin: margin;
+}
+QScrollBar:left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: @cgrey;
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
+}
+
+QScrollBar:vertical {
+    border: none;
+    background: @cgrey;
+    width: 16px;
+    margin: 0px;
+}
+QScrollBar::handle:vertical {
+    border: none;
+    background: @cpurple;
+    min-height: 24px;
+}
+QScrollBar::add-line:vertical {
+    border: none;
+    background: @cgrey;
+    height: 24px;
+    subcontrol-position: right;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {
+    border: none;
+    background: @cgrey;
+    height: 24px;
+    subcontrol-position: left;
+    subcontrol-origin: margin;
+}
+QScrollBar:left-arrow:vertical, QScrollBar::right-arrow:vertical {
+    border: none;
+    width: 0px;
+    height: 0px;
+    background: @cgrey;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}

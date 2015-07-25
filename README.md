@@ -9,5 +9,7 @@
 * Help/Info popups
 
 # TODO (styling)
-* List styles
-* List scrollbars
+* Make artist and album lists occupy less relative vertical space
+* Make title, artist, and album columns large by default
+* Make table headers auto-expand to fill full view if smaller
+* Popups
