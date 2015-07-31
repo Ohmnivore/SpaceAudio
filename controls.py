@@ -1,8 +1,9 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
+from file_missing_dialog import *
 from ffmpeg import *
-import util
+import util, os
 
 class Controls:
     def __init__(self, mainwin):
@@ -91,14 +92,30 @@ class Controls:
             self.mainwin.ui.PlayPause.setIcon(QIcon('assets/img/appbar.control.pause.png'))
 
     def play(self):
-        self.mainwin.ui.PlayPause.setIcon(QIcon('assets/img/appbar.control.pause.png'))
         if len(self.playlist) > 0:
-            self.color()
             track = self.playlist[self.curplaying].track
-            self.player.timer.reset()
-            self.mainwin.ui.TrackName.setText(track.title)
-            self.mainwin.ui.TrackLength.setText(util.min_to_string(track.length))
-            self.player.play(track, self.play_next, 0)
+            if self.check_if_exists(track.path):
+                self.mainwin.ui.PlayPause.setIcon(QIcon('assets/img/appbar.control.pause.png'))
+                self.color()
+                self.player.timer.reset()
+                self.mainwin.ui.TrackName.setText(track.title)
+                self.mainwin.ui.TrackLength.setText(util.min_to_string(track.length))
+                self.player.play(track, self.play_next, 0)
+            else:
+                dialog = FileMissingDialog(self.mainwin, track.path, self.remove_track, self.ignore_track)
+                dialog.exec()
+                self.stop()
+
+    def remove_track(self):
+        item = self.playlist[self.curplaying]
+        self.mainwin.db_t.delete_track(item.track.path)
+        self.table.removeRow(item.row())
+
+    def ignore_track(self):
+        pass
+
+    def check_if_exists(self, path):
+        return os.path.isfile(path) and os.access(path, os.R_OK)
 
     def color(self):
         for i in range(self.table.rowCount()):

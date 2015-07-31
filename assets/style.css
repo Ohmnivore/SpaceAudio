@@ -5,7 +5,7 @@
     qproperty-alignment: AlignCenter;
 }
 
-QMainWindow {
+QMainWindow, QDialog {
     background: @cgreylight;
     qproperty-windowIcon: url(assets/icon.png);
 }

@@ -29,6 +29,12 @@ class DBTrack:
             cur.execute('DELETE FROM tracks')
             self.con.commit()
 
+    def delete_track(self, path):
+        with self.con:
+            cur = self.con.cursor()
+            cur.execute('DELETE FROM tracks WHERE path=?', (path,))
+            self.con.commit()
+
     def check_if_has(self, path):
         with self.con:
             cur = self.con.cursor()
@@ -46,17 +52,17 @@ class DBTrack:
     def get_tracks(self):
         with self.con:
             cur = self.con.cursor()
-            cur.execute('SELECT * FROM tracks')
+            cur.execute('SELECT * FROM tracks ORDER BY album, track_number ASC')
             return cur.fetchall()
 
     def get_tracks_of_artist(self, artist):
         with self.con:
             cur = self.con.cursor()
-            cur.execute('SELECT * FROM tracks WHERE artist=?', (artist,))
+            cur.execute('SELECT * FROM tracks WHERE artist=? ORDER BY album, track_number ASC', (artist,))
             return cur.fetchall()
 
     def get_tracks_of_artist_album(self, artist, album):
         with self.con:
             cur = self.con.cursor()
-            cur.execute('SELECT * FROM tracks WHERE artist=? AND album=?', (artist, album,))
+            cur.execute('SELECT * FROM tracks WHERE artist=? AND album=? ORDER BY album, artist, track_number ASC', (artist, album,))
             return cur.fetchall()

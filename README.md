@@ -6,7 +6,6 @@
 # TODO
 * New thread for loading songs, or else the window freezes
 * Turn selected paths' parents' checkboxes green
-* Check if file exists before playing
 * Add tag support for formats other than mp3
 * Remove from library menu option
 * Open arbitrary files
