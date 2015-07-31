@@ -1,5 +1,6 @@
 class Roles:
     custom = 32
+    track = 16
 
 def min_to_string(minutes):
     m, s = divmod(minutes, 60)

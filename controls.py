@@ -12,6 +12,8 @@ class Controls:
         self.curlist = []
         self.curplaying = 0
         self.player = Ffmpeg()
+        self.last_item = None
+        self.is_list = False
 
         self.loop = QTimer()
         self.loop.timeout.connect(self.update)
@@ -35,22 +37,21 @@ class Controls:
     def chose_tracks(self):
         self.curlist = []
         arr = self.table.selectedItems()
-        last_row = 0
         self.curplaying = 0
+        self.is_list = True
         for i in range(len(arr)):
             a = arr[i]
             if a.column() == 0:
-                last_row = a.row()
-                self.add_row(last_row)
+                self.last_item = a
+                self.add_item(a)
         if len(self.curlist) == 1:
             self.curlist = []
-            self.curplaying = last_row
+            self.is_list = False
             for i in range(self.table.rowCount()):
-                self.add_row(i)
+                self.add_item(self.table.item(i, 0))
 
-    def add_row(self, row):
-        track = self.mainwin.track_map[row]
-        self.curlist.append(track)
+    def add_item(self, item):
+        self.curlist.append(item)
 
 
     def open_menu(self, position):
@@ -61,7 +62,12 @@ class Controls:
         menu.exec_(self.table.viewport().mapToGlobal(position))
 
     def context_play(self):
+        if self.is_list:
+            self.curplaying = 0
+        else:
+            self.curplaying = self.last_item.row()
         self.playlist = self.curlist[:]
+        self.color()
         self.play()
 
     def fix_slider(self):
@@ -72,8 +78,9 @@ class Controls:
             new_x = QStyle.sliderValueFromPosition(s.minimum(), s.maximum(), x, s.width())
             old_v = s.value()
             if old_v != new_x:
+                track = self.playlist[self.curplaying].track
                 s.setValue(new_x)
-                self.player.seek(new_x / s.maximum() * self.playlist[self.curplaying].length)
+                self.player.seek(new_x / s.maximum() * track.length)
 
     def toggle_play(self):
         if len(self.playlist) > 0:
@@ -86,10 +93,20 @@ class Controls:
     def play(self):
         self.mainwin.ui.PlayPause.setIcon(QIcon('assets/img/appbar.control.pause.png'))
         if len(self.playlist) > 0:
+            self.color()
+            track = self.playlist[self.curplaying].track
             self.player.timer.reset()
-            self.mainwin.ui.TrackName.setText(self.playlist[self.curplaying].title)
-            self.mainwin.ui.TrackLength.setText(util.min_to_string(self.playlist[self.curplaying].length))
-            self.player.play(self.playlist[self.curplaying], self.play_next, 0)
+            self.mainwin.ui.TrackName.setText(track.title)
+            self.mainwin.ui.TrackLength.setText(util.min_to_string(track.length))
+            self.player.play(track, self.play_next, 0)
+
+    def color(self):
+        for i in range(self.table.rowCount()):
+            self.table.item(i, 0).setBackground(QBrush(QColor(45, 45, 45))) # dark grey
+        for item in self.playlist:
+            item.setBackground(QBrush(QColor(89, 145, 170))) # blue
+        item = self.playlist[self.curplaying]
+        item.setBackground(QBrush(QColor(117, 192, 149))) # green
 
     def stop(self):
         self.mainwin.ui.PlayPause.setIcon(QIcon('assets/img/appbar.control.play.png'))
@@ -124,4 +141,5 @@ class Controls:
             self.player.set_volume(volume)
         # Animate track progress slider
         if len(self.playlist) > 0:
-            self.mainwin.ui.TrackSlider.setValue(float(self.player.timer.elapsed) * float(self.mainwin.ui.TrackSlider.maximum()) / float(self.playlist[self.curplaying].length))
+            track = self.playlist[self.curplaying].track
+            self.mainwin.ui.TrackSlider.setValue(float(self.player.timer.elapsed) * float(self.mainwin.ui.TrackSlider.maximum()) / float(track.length))

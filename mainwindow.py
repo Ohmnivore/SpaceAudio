@@ -117,7 +117,6 @@ class MainWindow(QMainWindow):
         self.ui.TrackTable.setRowCount(len(arr))
         for row in range(len(arr)):
             track = DBTrackItem(arr[row], row)
-            self.track_map[row] = track
             self.ui.TrackTable.setItem(row, 0, QTableWidgetItem(track.title))
             self.ui.TrackTable.setItem(row, 1, QTableWidgetItem(track.artist))
             self.ui.TrackTable.setItem(row, 2, QTableWidgetItem(track.album))
@@ -126,6 +125,7 @@ class MainWindow(QMainWindow):
             self.ui.TrackTable.setItem(row, 5, QTableWidgetItem(track.filename))
             self.ui.TrackTable.setItem(row, 6, QTableWidgetItem(track.path))
             self.ui.TrackTable.setItem(row, 7, QTableWidgetItem(util.filesize_to_string(track.filesize)))
+            self.ui.TrackTable.item(row, 0).track = track;
 
 
     def hook_ui(self):
