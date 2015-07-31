@@ -1,6 +1,11 @@
 import os, hashlib
+import threading
 from mutagen import File
 from track import *
+from info import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 
 class Scanner:
     def __init__(self, mainwin, paths, db_t, db_a, db_alb):
@@ -9,8 +14,19 @@ class Scanner:
         self.db_t = db_t
         self.db_a = db_a
         self.db_alb = db_alb
-        for p in paths:
+        self.scan()
+
+        #self.info = Info(self.mainwin)
+        #self.info.setWindowTitle('About')
+        #self.info.ui.Text.setText('Scanning files... this may take a while.')
+        #self.info.show()
+        #self.timer = QTimer(self.mainwin)
+        #self.timer.singleShot(100, self.scan)
+
+    def scan(self):
+        for p in self.paths:
             self.scan_dir(p)
+        #self.info.close()
         self.mainwin.refresh_lists()
 
     def scan_dir(self, path):

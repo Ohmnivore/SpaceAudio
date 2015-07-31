@@ -11,7 +11,7 @@ class Track:
         self.filesize = None
 
 class DBTrackItem(Track):
-    def __init__(self, arr):
+    def __init__(self, arr, row):
         self.path = arr[0]
         self.filename = arr[1]
         self.fhash = arr[2]
@@ -21,3 +21,4 @@ class DBTrackItem(Track):
         self.length = arr[6]
         self.track_number = arr[7]
         self.filesize = arr[8]
+        self.row = row

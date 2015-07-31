@@ -116,7 +116,7 @@ class MainWindow(QMainWindow):
         self.track_map = {}
         self.ui.TrackTable.setRowCount(len(arr))
         for row in range(len(arr)):
-            track = DBTrackItem(arr[row])
+            track = DBTrackItem(arr[row], row)
             self.track_map[row] = track
             self.ui.TrackTable.setItem(row, 0, QTableWidgetItem(track.title))
             self.ui.TrackTable.setItem(row, 1, QTableWidgetItem(track.artist))
