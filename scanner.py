@@ -1,6 +1,10 @@
 import os, hashlib
 import threading
 from mutagen import File
+from mutagen import mp3
+from mutagen import flac
+from mutagen import oggvorbis
+from mutagen import mp4
 from track import *
 from info import *
 from PyQt5.QtGui import *
@@ -38,7 +42,8 @@ class Scanner:
 
     def scan_file(self, path):
         base, ext = os.path.splitext(path)
-        if ext == '.mp3':
+        ext = ext.lower()
+        if ext == '.mp3' or ext == '.flac' or ext == '.ogg' or ext == '.m4a':
             FileData(path, self.db_t, self.db_a, self.db_alb)
 
 class FileData(Track):
@@ -53,13 +58,29 @@ class FileData(Track):
 
         if not self.db_t.check_if_has(self.path):
             self.meta = File(path)
-            self.fhash = str(self.hash_file(self.path))
-            self.title = self.meta.tags['TIT2'].text[0]
-            self.artist = self.meta.tags['TPE1'].text[0]
-            self.album = self.meta.tags['TALB'].text[0]
-            self.length = int(self.meta.info.length)
-            self.track_number = int(self.meta.tags['TRCK'].text[0].split('/')[0])
+            #self.fhash = str(self.hash_file(self.path))
+            self.fhash = ''
             self.filesize = int(os.path.getsize(self.path))
+            if isinstance(self.meta, mp3.MP3):
+                self.title = self.meta.tags['TIT2'].text[0]
+                self.artist = self.meta.tags['TPE1'].text[0]
+                self.album = self.meta.tags['TALB'].text[0]
+                self.length = int(self.meta.info.length)
+                self.track_number = int(self.meta.tags['TRCK'].text[0].split('/')[0])
+            elif isinstance(self.meta, flac.FLAC) or isinstance(self.meta, oggvorbis.OggVorbis):
+                self.title = self.meta.tags['TITLE'][0]
+                self.artist = self.meta.tags['Artist'][0]
+                self.album = self.meta.tags['Album'][0]
+                self.length = int(self.meta.info.length)
+                self.track_number = int(self.meta.tags['TRACKNUMBER'][0].split('/')[0])
+            elif isinstance(self.meta, mp4.MP4):
+                print(self.meta.pprint())
+                self.title = self.meta.tags['©nam'][0]
+                self.artist = self.meta.tags['©ART'][0]
+                self.album = self.meta.tags['©alb'][0]
+                self.length = int(self.meta.info.length)
+                self.track_number = int(self.meta.tags['trkn'][0][0])
+
             self.db_t.insert_file(self)
 
             if not self.db_a.check_if_has(self.artist):

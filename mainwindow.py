@@ -120,7 +120,8 @@ class MainWindow(QMainWindow):
             self.ui.TrackTable.setItem(row, 0, QTableWidgetItem(track.title))
             self.ui.TrackTable.setItem(row, 1, QTableWidgetItem(track.artist))
             self.ui.TrackTable.setItem(row, 2, QTableWidgetItem(track.album))
-            self.ui.TrackTable.setItem(row, 3, QTableWidgetItem(util.min_to_string(track.length)))
+            if track.length != None:
+                self.ui.TrackTable.setItem(row, 3, QTableWidgetItem(util.min_to_string(track.length)))
             self.ui.TrackTable.setItem(row, 4, QTableWidgetItem(str(track.track_number)))
             self.ui.TrackTable.setItem(row, 5, QTableWidgetItem(track.filename))
             self.ui.TrackTable.setItem(row, 6, QTableWidgetItem(track.path))
@@ -129,7 +130,8 @@ class MainWindow(QMainWindow):
         for r in range(self.ui.TrackTable.rowCount()):
             for c in range(self.ui.TrackTable.columnCount()):
                 item = self.ui.TrackTable.item(r, c)
-                item.setFlags(item.flags() & ~Qt.ItemIsEditable)
+                if item != None:
+                    item.setFlags(item.flags() & ~Qt.ItemIsEditable)
 
 
     def hook_ui(self):
