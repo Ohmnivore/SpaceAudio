@@ -8,18 +8,18 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.setWindowModality(QtCore.Qt.NonModal)
-        Form.resize(320, 240)
+class Ui_LibForm(object):
+    def setupUi(self, LibForm):
+        LibForm.setObjectName("LibForm")
+        LibForm.setWindowModality(QtCore.Qt.NonModal)
+        LibForm.resize(320, 240)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
-        Form.setSizePolicy(sizePolicy)
-        Form.setMaximumSize(QtCore.QSize(320, 240))
-        self.gridLayoutWidget = QtWidgets.QWidget(Form)
+        sizePolicy.setHeightForWidth(LibForm.sizePolicy().hasHeightForWidth())
+        LibForm.setSizePolicy(sizePolicy)
+        LibForm.setMaximumSize(QtCore.QSize(320, 240))
+        self.gridLayoutWidget = QtWidgets.QWidget(LibForm)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(9, 9, 302, 222))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
@@ -37,12 +37,12 @@ class Ui_Form(object):
         self.Tree.setObjectName("Tree")
         self.gridLayout.addWidget(self.Tree, 0, 0, 1, 1)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(LibForm)
+        QtCore.QMetaObject.connectSlotsByName(LibForm)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, LibForm):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Manage Library"))
-        self.Ok.setText(_translate("Form", "Scan into library"))
-        self.Cancel.setText(_translate("Form", "Cancel"))
+        LibForm.setWindowTitle(_translate("LibForm", "Manage Library"))
+        self.Ok.setText(_translate("LibForm", "Scan into library"))
+        self.Cancel.setText(_translate("LibForm", "Cancel"))
 

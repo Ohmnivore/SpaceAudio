@@ -3,10 +3,19 @@
 
 # This is a WIP
 
-# TODO
-* New thread for loading songs, or else the window freezes
-* Turn selected paths' parents' checkboxes green
-* Add tag support for formats other than mp3
+# TODO (metadata extraction)
+* FLAC
+* OGG
+* APEv2
+* MP4
+* ASF
+* AAC
+
+# TODO (immediate)
 * Remove from library menu option
+* New thread for loading songs, or else the window freezes
+
+# TODO (eventually)
+* Force the directory tree to repaint on change
 * Open arbitrary files
 * Go ham on the UI like a QA tester

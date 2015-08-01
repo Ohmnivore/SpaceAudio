@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>LibForm</class>
+ <widget class="QWidget" name="LibForm">
   <property name="windowModality">
    <enum>Qt::NonModal</enum>
   </property>

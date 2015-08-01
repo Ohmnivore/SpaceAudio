@@ -84,7 +84,7 @@ class MainWindow(QMainWindow):
 
     def show_library_manager(self):
         self.lib = Library(self.db_p, self.db_t, self.db_a, self.db_alb, self)
-        self.lib.show()
+        self.lib.exec()
 
     def scan(self):
         Scanner(self, self.db_p.get_paths(), self.db_t, self.db_a, self.db_alb)
