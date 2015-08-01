@@ -3,14 +3,13 @@
 
 # This is a WIP
 
-# Supported metadata formats
+# Supported formats
 * mp3
 * flac
-* ogg vorbis (ogg)
-* mp4 (m4a)
+* ogg vorbis (.ogg)
+* mp4 (.m4a)
 
 # TODO (immediate)
-* Remove from library menu option
 * New thread for loading songs, or else the window freezes
 
 # TODO (eventually)
