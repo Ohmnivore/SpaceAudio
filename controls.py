@@ -149,6 +149,10 @@ class Controls:
         self.play()
 
     def update(self):
+        # Run refresh from main thread to avoid threading issues
+        if self.mainwin.do_refresh:
+            self.mainwin.refresh_lists(self.mainwin.db_t, self.mainwin.db_a, self.mainwin.db_alb)
+            self.mainwin.do_refresh = False
         # Elapsed label
         if len(self.playlist) > 0:
             self.mainwin.ui.ElapsedTime.setText(util.min_to_string(self.player.timer.elapsed))

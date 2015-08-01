@@ -13,8 +13,6 @@ class Library(QDialog):
         self.ui.setupUi(self)
         self.hook_buttons()
         self.db_p = db_p
-        self.db_t = db_t
-        self.db_a = db_a
         self.db_alb = db_alb
 
         self.model = None
@@ -27,8 +25,8 @@ class Library(QDialog):
 
     def do_scan(self):
         self.db_p.set_paths(self.model.checked)
-        Scanner(self.mainwin, self.model.checked, self.db_t, self.db_a, self.db_alb)
         self.close()
+        Scanner(self.mainwin, self.model.checked)
 
     def show_tree(self):
         self.model = MyQDirModel(self.ui.Tree, self.db_p.get_paths())

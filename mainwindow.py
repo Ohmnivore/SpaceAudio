@@ -23,7 +23,8 @@ class MainWindow(QMainWindow):
         self.db_t = db_t
         self.db_a = db_a
         self.db_alb = db_alb
-        self.refresh_lists()
+        self.refresh_lists(self.db_t, self.db_a, self.db_alb)
+        self.do_refresh = False
 
         self.ui.TrackTable.setColumnWidth(0, 312)
         self.ui.TrackTable.setColumnWidth(1, 156)
@@ -87,16 +88,16 @@ class MainWindow(QMainWindow):
         self.lib.exec()
 
     def scan(self):
-        Scanner(self, self.db_p.get_paths(), self.db_t, self.db_a, self.db_alb)
+        Scanner(self, self.db_p.get_paths())
 
     def hard_scan(self):
         self.db_t.clear()
-        Scanner(self, self.db_p.get_paths(), self.db_t, self.db_a, self.db_alb)
+        Scanner(self, self.db_p.get_paths())
 
-    def refresh_lists(self):
-        self.refresh_artists(self.db_a.get_artists())
-        self.refresh_albums(self.db_alb.get_albums())
-        self.refresh_tracks(self.db_t.get_tracks())
+    def refresh_lists(self, db_t, db_a, db_alb):
+        self.refresh_artists(db_a.get_artists())
+        self.refresh_albums(db_alb.get_albums())
+        self.refresh_tracks(db_t.get_tracks())
 
     def refresh_artists(self, arr):
         self.ui.ArtistList.clear()

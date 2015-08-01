@@ -10,41 +10,56 @@ from info import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+from popup import *
+from db_track import *
+from db_artist import *
+from db_album import *
 
 class Scanner:
-    def __init__(self, mainwin, paths, db_t, db_a, db_alb):
+    def __init__(self, mainwin, paths):
         self.mainwin = mainwin
         self.paths = paths
-        self.db_t = db_t
-        self.db_a = db_a
-        self.db_alb = db_alb
+
+        self.info = Popup(self.mainwin)
+        self.info.setWindowTitle('About')
+        self.info.setWindowFlags(Qt.Dialog | Qt.FramelessWindowHint)
+        self.info.ui.Text.setText('Scanning files... this may take a while.')
+        self.info.ui.Ok.setEnabled(False)
+        self.info.count = 0
+        self.info.ui.Ok.setText('Files found: ' + str(self.info.count))
+        self.info.show()
+
         self.scan()
 
-        #self.info = Info(self.mainwin)
-        #self.info.setWindowTitle('About')
-        #self.info.ui.Text.setText('Scanning files... this may take a while.')
-        #self.info.show()
-        #self.timer = QTimer(self.mainwin)
-        #self.timer.singleShot(100, self.scan)
+    def scanfiles(self):
+        db_t = DBTrack()
+        db_a = DBArtist()
+        db_alb = DBAlbum()
+        for p in self.paths:
+            self.scan_dir(p, db_t, db_a, db_alb)
+        self.info.close()
+        self.mainwin.do_refresh = True
+        return
 
     def scan(self):
-        for p in self.paths:
-            self.scan_dir(p)
-        #self.info.close()
-        self.mainwin.refresh_lists()
+        t = threading.Thread(target=self.scanfiles)
+        t.setDaemon(True)
+        t.start()
 
-    def scan_dir(self, path):
+    def scan_dir(self, path, db_t, db_a, db_alb):
         for dir_name, subdir_list, file_list in os.walk(path):
             for f in file_list:
-                self.scan_file(os.path.join(dir_name, f))
+                self.scan_file(os.path.join(dir_name, f), db_t, db_a, db_alb)
             for d in subdir_list:
-                self.scan_dir(os.path.join(dir_name, d))
+                self.scan_dir(os.path.join(dir_name, d), db_t, db_a, db_alb)
 
-    def scan_file(self, path):
+    def scan_file(self, path, db_t, db_a, db_alb):
         base, ext = os.path.splitext(path)
         ext = ext.lower()
         if ext == '.mp3' or ext == '.flac' or ext == '.ogg' or ext == '.m4a':
-            FileData(path, self.db_t, self.db_a, self.db_alb)
+            self.info.count += 1
+            self.info.ui.Ok.setText('Files found: ' + str(self.info.count))
+            FileData(path, db_t, db_a, db_alb)
 
 class FileData(Track):
     def __init__(self, path, db_t, db_a, db_alb):
