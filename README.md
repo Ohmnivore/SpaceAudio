@@ -14,7 +14,8 @@
 * New thread for loading songs, or else the window freezes
 
 # TODO (eventually)
-* Deal with incomplete metadata -> Unknown artist + unknown album defaults
 * Force the directory tree to repaint on change
+* Distribute .exe
+* Test on Linux
 * Open arbitrary files
 * Go ham on the UI like a QA tester

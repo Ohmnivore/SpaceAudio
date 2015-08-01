@@ -53,41 +53,52 @@ class FileData(Track):
         self.db_t = db_t
         self.db_a = db_a
         self.db_alb = db_alb
-
-        self.filename = os.path.basename(self.path)
+        self.is_recognized = False
 
         if not self.db_t.check_if_has(self.path):
             self.meta = File(path)
+            self.filename = os.path.basename(self.path)
             #self.fhash = str(self.hash_file(self.path))
             self.fhash = ''
             self.filesize = int(os.path.getsize(self.path))
-            if isinstance(self.meta, mp3.MP3):
-                self.title = self.meta.tags['TIT2'].text[0]
-                self.artist = self.meta.tags['TPE1'].text[0]
-                self.album = self.meta.tags['TALB'].text[0]
-                self.length = int(self.meta.info.length)
-                self.track_number = int(self.meta.tags['TRCK'].text[0].split('/')[0])
-            elif isinstance(self.meta, flac.FLAC) or isinstance(self.meta, oggvorbis.OggVorbis):
-                self.title = self.meta.tags['TITLE'][0]
-                self.artist = self.meta.tags['Artist'][0]
-                self.album = self.meta.tags['Album'][0]
-                self.length = int(self.meta.info.length)
-                self.track_number = int(self.meta.tags['TRACKNUMBER'][0].split('/')[0])
-            elif isinstance(self.meta, mp4.MP4):
-                print(self.meta.pprint())
-                self.title = self.meta.tags['©nam'][0]
-                self.artist = self.meta.tags['©ART'][0]
-                self.album = self.meta.tags['©alb'][0]
-                self.length = int(self.meta.info.length)
-                self.track_number = int(self.meta.tags['trkn'][0][0])
+            try:
+                if isinstance(self.meta, mp3.MP3):
+                    self.is_recognized = True
+                    self.title = self.meta.tags['TIT2'].text[0]
+                    self.artist = self.meta.tags['TPE1'].text[0]
+                    self.album = self.meta.tags['TALB'].text[0]
+                    self.track_number = int(self.meta.tags['TRCK'].text[0].split('/')[0])
+                elif isinstance(self.meta, flac.FLAC) or isinstance(self.meta, oggvorbis.OggVorbis):
+                    self.is_recognized = True
+                    self.title = self.meta.tags['TITLE'][0]
+                    self.artist = self.meta.tags['Artist'][0]
+                    self.album = self.meta.tags['Album'][0]
+                    self.track_number = int(self.meta.tags['TRACKNUMBER'][0].split('/')[0])
+                elif isinstance(self.meta, mp4.MP4):
+                    self.is_recognized = True
+                    self.title = self.meta.tags['©nam'][0]
+                    self.artist = self.meta.tags['©ART'][0]
+                    self.album = self.meta.tags['©alb'][0]
+                    self.track_number = int(self.meta.tags['trkn'][0][0])
+            except:
+                pass
 
-            self.db_t.insert_file(self)
+            if self.is_recognized:
+                self.length = int(self.meta.info.length)
+                if self.title == None:
+                    self.title = self.filename
+                if self.artist == None:
+                    self.artist = 'Unknown'
+                if self.album == None:
+                    self.album = 'Unknown'
+                if self.track_number == None:
+                    self.track_number = 0
 
-            if not self.db_a.check_if_has(self.artist):
-                self.db_a.insert_name(self.artist)
-
-            if not self.db_alb.check_if_has(self.artist + self.album):
-                self.db_alb.insert_album(self.artist + self.album, self.album, self.artist)
+                self.db_t.insert_file(self)
+                if not self.db_a.check_if_has(self.artist):
+                    self.db_a.insert_name(self.artist)
+                if not self.db_alb.check_if_has(self.artist + self.album):
+                    self.db_alb.insert_album(self.artist + self.album, self.album, self.artist)
 
     def hash_file(self, path):
         BLOCKSIZE = 65536

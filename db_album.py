@@ -34,11 +34,11 @@ class DBAlbum:
     def get_albums(self):
         with self.con:
             cur = self.con.cursor()
-            cur.execute('SELECT * FROM albums')
+            cur.execute('SELECT * FROM albums ORDER BY artist, name ASC')
             return cur.fetchall()
 
     def get_albums_of_artist(self, artist):
         with self.con:
             cur = self.con.cursor()
-            cur.execute('SELECT * FROM albums WHERE artist=?', (artist,))
+            cur.execute('SELECT * FROM albums WHERE artist=? ORDER BY name ASC', (artist,))
             return cur.fetchall()

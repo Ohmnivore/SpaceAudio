@@ -32,7 +32,7 @@ class DBArtist:
     def get_artists(self):
         with self.con:
             cur = self.con.cursor()
-            cur.execute('SELECT * FROM artists')
+            cur.execute('SELECT * FROM artists ORDER BY name ASC')
 
             arr = []
             for c in cur.fetchall():
