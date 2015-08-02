@@ -11,7 +11,6 @@
 
 # TODO (immediate)
 * Open arbitrary files
-* Distribute .exe
 
 # TODO (eventually)
 * Force the directory tree to repaint on change
