@@ -61,8 +61,14 @@ class DBTrack:
             cur.execute('SELECT * FROM tracks WHERE artist=? ORDER BY album, track_number ASC', (artist,))
             return cur.fetchall()
 
-    def get_tracks_of_artist_album(self, artist, album):
+    def get_tracks_of_album(self, album):
         with self.con:
             cur = self.con.cursor()
-            cur.execute('SELECT * FROM tracks WHERE artist=? AND album=? ORDER BY album, artist, track_number ASC', (artist, album,))
+            cur.execute('SELECT * FROM tracks WHERE album=? ORDER BY album, track_number ASC', (album,))
             return cur.fetchall()
+
+    # def get_tracks_of_artist_album(self, artist, album):
+    #     with self.con:
+    #         cur = self.con.cursor()
+    #         cur.execute('SELECT * FROM tracks WHERE artist=? AND album=? ORDER BY album, artist, track_number ASC', (artist, album,))
+    #         return cur.fetchall()

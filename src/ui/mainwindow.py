@@ -1,13 +1,13 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
-from library import *
-from popup import *
-from controls import *
-from track import *
-from ui_main import Ui_MainWindow
+from ui.library import *
+from ui.popup import *
+from ui.controls import *
+from db.track import *
+from ui_base.ui_main import Ui_MainWindow
 import time
-import util
+from util import util
 
 class MainWindow(QMainWindow):
     def __init__(self, db_p, db_t, db_a, db_alb):
@@ -45,7 +45,7 @@ class MainWindow(QMainWindow):
     def show_about(self):
         about = Popup(self)
         about.setWindowTitle('About')
-        about.ui.Text.setText(self.add_style_color(open('README.html', 'r').read()))
+        about.ui.Text.setText(self.add_style_color(open('../README.html', 'r').read()))
         about.show()
     def add_style_color(self, html):
         i = 0
@@ -69,7 +69,7 @@ class MainWindow(QMainWindow):
         about.ui.Text.setText("""
             Please submit your issue to the GitHub tracker: <a href=https://github.com/Ohmnivore/SpaceAudio/issues style="color:#ecb447;">https://github.com/Ohmnivore/SpaceAudio/issues</a>
             <br/><br/>
-            Do not hesitate, for every issue resolved brings us closer to world domination.
+            Don't hesitate.
         """)
         about.show()
 
@@ -108,10 +108,13 @@ class MainWindow(QMainWindow):
     def refresh_albums(self, arr):
         self.ui.AlbumList.clear()
         self.ui.AlbumList.addItem('All')
+        temp_list = []
         for album in arr:
-            w = QListWidgetItem(album[1])
-            w.setData(util.Roles.custom, album[2])
-            self.ui.AlbumList.addItem(w)
+            if (album[1] not in temp_list):
+                w = QListWidgetItem(album[1])
+                w.setData(util.Roles.custom, album[2])
+                self.ui.AlbumList.addItem(w)
+                temp_list.append(album[1])
 
     def refresh_tracks(self, arr):
         self.track_map = {}
@@ -161,4 +164,4 @@ class MainWindow(QMainWindow):
                 self.refresh_tracks(self.db_t.get_tracks_of_artist(cur.text()))
         else:
             # Show tracks for current album
-            self.refresh_tracks(self.db_t.get_tracks_of_artist_album(artist, album))
+            self.refresh_tracks(self.db_t.get_tracks_of_album(album))

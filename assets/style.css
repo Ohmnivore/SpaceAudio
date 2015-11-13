@@ -7,7 +7,7 @@
 
 QMainWindow, QDialog {
     background: @cgreylight;
-    qproperty-windowIcon: url(assets/icon.png);
+    qproperty-windowIcon: url(../assets/icon.png);
 }
 
 QPushButton {
@@ -90,10 +90,10 @@ QLabel {
     background-color: @corange;
 }
 #NextTrack {
-    border-image: url(assets/img/appbar.navigate.next.png);
+    border-image: url(../assets/img/appbar.navigate.next.png);
 }
 #PreviousTrack {
-    border-image: url(assets/img/appbar.navigate.previous.png);
+    border-image: url(../assets/img/appbar.navigate.previous.png);
 }
 
 #PlayPause {

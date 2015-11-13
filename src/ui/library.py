@@ -1,9 +1,9 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
-from ui_library import Ui_LibForm
+from ui_base.ui_library import Ui_LibForm
 import os
-from scanner import *
+from db.scanner import *
 
 class Library(QDialog):
     def __init__(self, db_p, db_t, db_a, db_alb, parent):

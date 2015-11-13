@@ -5,15 +5,15 @@ from mutagen import mp3
 from mutagen import flac
 from mutagen import oggvorbis
 from mutagen import mp4
-from track import *
-from info import *
+from db.track import *
+from ui.info import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
-from popup import *
-from db_track import *
-from db_artist import *
-from db_album import *
+from ui.popup import *
+from db.db_track import *
+from db.db_artist import *
+from db.db_album import *
 
 class Scanner:
     def __init__(self, mainwin, paths):

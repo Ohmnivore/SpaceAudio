@@ -1,9 +1,10 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
-from file_missing_dialog import *
-from ffmpeg import *
-import util, os
+from ui.file_missing_dialog import *
+from player.ffmpeg import *
+import os
+from util import util
 
 class Controls:
     def __init__(self, mainwin):
@@ -21,7 +22,7 @@ class Controls:
         self.loop.start(33)
 
         self.hook_ui()
-        self.mainwin.ui.PlayPause.setIcon(QIcon('assets/img/appbar.control.play.png'))
+        self.mainwin.ui.PlayPause.setIcon(QIcon('../assets/img/appbar.control.play.png'))
 
     def on_close(self):
         self.stop()
@@ -87,15 +88,15 @@ class Controls:
         if len(self.playlist) > 0:
             self.player.toggle_play()
         if self.player.timer.paused:
-            self.mainwin.ui.PlayPause.setIcon(QIcon('assets/img/appbar.control.play.png'))
+            self.mainwin.ui.PlayPause.setIcon(QIcon('../assets/img/appbar.control.play.png'))
         else:
-            self.mainwin.ui.PlayPause.setIcon(QIcon('assets/img/appbar.control.pause.png'))
+            self.mainwin.ui.PlayPause.setIcon(QIcon('../assets/img/appbar.control.pause.png'))
 
     def play(self):
         if len(self.playlist) > 0:
             track = self.playlist[self.curplaying].track
             if self.check_if_exists(track.path):
-                self.mainwin.ui.PlayPause.setIcon(QIcon('assets/img/appbar.control.pause.png'))
+                self.mainwin.ui.PlayPause.setIcon(QIcon('../assets/img/appbar.control.pause.png'))
                 self.color()
                 self.player.timer.reset()
                 self.mainwin.ui.TrackName.setText(track.title)
@@ -126,7 +127,7 @@ class Controls:
         item.setBackground(QBrush(QColor(117, 192, 149))) # green
 
     def stop(self):
-        self.mainwin.ui.PlayPause.setIcon(QIcon('assets/img/appbar.control.play.png'))
+        self.mainwin.ui.PlayPause.setIcon(QIcon('../assets/img/appbar.control.play.png'))
         self.player.stop()
 
     def play_next(self):

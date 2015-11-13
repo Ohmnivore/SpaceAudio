@@ -1,5 +1,5 @@
 from PyQt5.QtCore import *
-from popup_two import *
+from ui.popup_two import *
 
 class FileMissingDialog(PopupTwo):
     def __init__(self, parent, path, remove_call, ignore_call):

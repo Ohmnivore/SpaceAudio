@@ -1,7 +1,7 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
-from ui_info import Ui_Form
+from ui_base.ui_info import Ui_Form
 
 class Info(QMainWindow):
     def __init__(self, parent = None):
