@@ -1,18 +1,33 @@
+from util.timer import *
+
 class Player:
     def __init__(self):
+        self.timer = Timer()
+        self.volume = 1
+        self.track = None
+        self.end_callback = None
+
+    def update(self):
         pass
 
     def play(self, track, end_callback, seek = 0):
-        pass
+        self.timer.paused = False
+        self.timer.set(seek)
 
     def stop(self):
-        pass
+        self.timer.paused = True
 
     def toggle_play(self):
-        pass
+        if self.timer.paused:
+            self.play(self.track, self.end_callback, self.timer.elapsed)
+        else:
+            self.stop()
 
     def seek(self, elapsed):
-        pass
+        self.timer.set(elapsed)
 
     def set_volume(self, volume):
-        pass
+        self.volume = volume
+
+    def shutdown(self):
+        self.stop()

@@ -7,12 +7,12 @@
 * mp3
 * flac
 * ogg vorbis (.ogg)
-* mp4 (.m4a)
+* wav
 
 # TODO (immediate)
 * Open arbitrary files
 
 # TODO (eventually)
 * Force the directory tree to repaint on change
-* Test on Linux
+* Test on Linux and Mac
 * Go ham on the UI like a QA tester

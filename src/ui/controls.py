@@ -2,7 +2,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from ui.file_missing_dialog import *
-from player.ffmpeg import *
+from player.pyglet import *
 import os
 from util import util
 
@@ -13,7 +13,7 @@ class Controls:
         self.playlist = []
         self.curlist = []
         self.curplaying = 0
-        self.player = Ffmpeg()
+        self.player = Pyglet()
         self.last_item = None
         self.is_list = False
 
@@ -25,7 +25,7 @@ class Controls:
         self.mainwin.ui.PlayPause.setIcon(QIcon('../assets/img/appbar.control.play.png'))
 
     def on_close(self):
-        self.stop()
+        self.player.shutdown()
 
     def hook_ui(self):
         self.table.itemSelectionChanged.connect(self.chose_tracks)
@@ -85,12 +85,12 @@ class Controls:
                 self.player.seek(new_x / s.maximum() * track.length)
 
     def toggle_play(self):
+        if self.player.timer.paused:
+            self.mainwin.ui.PlayPause.setIcon(QIcon('../assets/img/appbar.control.pause.png'))
+        else:
+            self.mainwin.ui.PlayPause.setIcon(QIcon('../assets/img/appbar.control.play.png'))
         if len(self.playlist) > 0:
             self.player.toggle_play()
-        if self.player.timer.paused:
-            self.mainwin.ui.PlayPause.setIcon(QIcon('../assets/img/appbar.control.play.png'))
-        else:
-            self.mainwin.ui.PlayPause.setIcon(QIcon('../assets/img/appbar.control.pause.png'))
 
     def play(self):
         if len(self.playlist) > 0:
@@ -165,3 +165,5 @@ class Controls:
         if len(self.playlist) > 0:
             track = self.playlist[self.curplaying].track
             self.mainwin.ui.TrackSlider.setValue(float(self.player.timer.elapsed) * float(self.mainwin.ui.TrackSlider.maximum()) / float(track.length))
+        # Update player
+        self.player.update()
