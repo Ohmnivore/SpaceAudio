@@ -7,6 +7,7 @@ from db.db_track import *
 from db.db_artist import *
 from db.db_album import *
 from ui.process_style import *
+from util.logger import *
 import sys
 
 def open_r(path):
@@ -19,6 +20,10 @@ def load_stylesheet(app, processor):
     app.setStyleSheet(processor.process(style) + processor.process(style_list) + processor.process(style_table))
 
 if __name__ == '__main__':
+    logger = Logger('SpaceAudio.log')
+    sys.stdout = logger
+    sys.stderr = logger
+
     open('library.db', 'a').close()
     db_p = DBPath()
     db_t = DBTrack()
