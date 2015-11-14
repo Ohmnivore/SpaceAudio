@@ -64,13 +64,14 @@ class Controls:
         menu.exec_(self.table.viewport().mapToGlobal(position))
 
     def context_play(self):
-        if self.is_list:
-            self.curplaying = 0
-        else:
-            self.curplaying = self.last_item.row()
-        self.playlist = self.curlist[:]
-        self.color()
-        self.play()
+        if len(self.curlist) > 0:
+            if self.is_list:
+                self.curplaying = 0
+            else:
+                self.curplaying = self.last_item.row()
+            self.playlist = self.curlist[:]
+            self.color()
+            self.play()
 
     def fix_slider(self):
         s = self.mainwin.ui.TrackSlider

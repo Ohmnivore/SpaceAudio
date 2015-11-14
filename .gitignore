@@ -9,3 +9,5 @@ __pycache__/
 /SpaceAudio.spec
 *.db
 *.log
+/SpaceAudioWin32
+*.zip

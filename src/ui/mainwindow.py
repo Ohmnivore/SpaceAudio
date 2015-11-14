@@ -104,6 +104,7 @@ class MainWindow(QMainWindow):
         self.ui.ArtistList.addItem('All')
         for artist in arr:
             self.ui.ArtistList.addItem(QListWidgetItem(artist))
+        self.controls.chose_tracks()
 
     def refresh_albums(self, arr):
         self.ui.AlbumList.clear()
@@ -115,6 +116,7 @@ class MainWindow(QMainWindow):
                 w.setData(util.Roles.custom, album[2])
                 self.ui.AlbumList.addItem(w)
                 temp_list.append(album[1])
+        self.controls.chose_tracks()
 
     def refresh_tracks(self, arr):
         self.track_map = {}
@@ -136,6 +138,7 @@ class MainWindow(QMainWindow):
                 item = self.ui.TrackTable.item(r, c)
                 if item != None:
                     item.setFlags(item.flags() & ~Qt.ItemIsEditable)
+        self.controls.chose_tracks()
 
 
     def hook_ui(self):

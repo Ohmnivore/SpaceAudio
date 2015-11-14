@@ -10,6 +10,20 @@ from ui.process_style import *
 from util.logger import *
 import sys
 
+import os.path
+import traceback
+
+def handle_exception(exc_type, exc_value, exc_traceback):
+    """ handle all exceptions """
+    ## KeyboardInterrupt is a special case.
+    ## We don't raise the error dialog when it occurs.
+    if issubclass(exc_type, KeyboardInterrupt):
+        if qApp:
+            qApp.quit()
+        return
+    sys.stderr.write(''.join(traceback.format_exception(exc_type, exc_value, exc_traceback)))
+    sys.exit(1)
+
 def open_r(path):
     return open(path, 'r').read()
 
@@ -23,6 +37,7 @@ if __name__ == '__main__':
     logger = Logger('SpaceAudio.log')
     sys.stdout = logger
     sys.stderr = logger
+    sys.excepthook = handle_exception
 
     open('library.db', 'a').close()
     db_p = DBPath()
