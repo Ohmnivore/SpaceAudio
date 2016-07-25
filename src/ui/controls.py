@@ -50,7 +50,7 @@ class Controls:
             self.is_list = False
             for i in range(self.table.rowCount()):
                 self.add_item(self.table.item(i, 0))
-        self.color()
+        # self.color()
 
     def add_item(self, item):
         self.curlist.append(item)
@@ -119,6 +119,10 @@ class Controls:
         return os.path.isfile(path) and os.access(path, os.R_OK)
 
     def color(self):
+        i = 0
+        while i < self.mainwin.ui.TrackTable.rowCount():
+            self.mainwin.ui.TrackTable.item(i, 0).setBackground(QBrush(QColor(45, 45, 45))) # dark grey
+            i += 1
         for item in self.curlist:
             self.color_item(item)
             
@@ -144,6 +148,9 @@ class Controls:
         self.curplaying += 1
         if self.curplaying < len(self.playlist):
             self.play()
+        else:
+            self.curplaying = len(self.playlist) - 1
+            self.stop()
 
     def previous_track(self):
         self.curplaying -= 1
