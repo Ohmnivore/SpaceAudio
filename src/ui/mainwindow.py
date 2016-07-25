@@ -84,7 +84,7 @@ class MainWindow(QMainWindow):
         about.ui.Text.setText("""
             Email: markbeiline@gmail.com <br/>
             Twitter: <a href="https://twitter.com/4_AM_Games" style="color:#ecb447;">@4_AM_Games</a> <br/>
-            Website: <a href="http://fouramgames.com/" style="color:#ecb447;">http://fouramgames.com/</a>
+            Website: <a href="http://fouramgames.com" style="color:#ecb447;">fouramgames.com</a>
         """)
         about.show()
 
