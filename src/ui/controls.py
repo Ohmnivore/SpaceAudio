@@ -39,7 +39,6 @@ class Controls:
     def chose_tracks(self):
         self.curlist = []
         arr = self.table.selectedItems()
-        self.curplaying = 0
         self.is_list = True
         for i in range(len(arr)):
             a = arr[i]
@@ -51,10 +50,10 @@ class Controls:
             self.is_list = False
             for i in range(self.table.rowCount()):
                 self.add_item(self.table.item(i, 0))
+        self.color()
 
     def add_item(self, item):
         self.curlist.append(item)
-
 
     def open_menu(self, position):
         menu = QMenu()
@@ -69,6 +68,7 @@ class Controls:
                 self.curplaying = 0
             else:
                 self.curplaying = self.last_item.row()
+                print(self.curplaying)
             self.playlist = self.curlist[:]
             self.color()
             self.play()
@@ -120,12 +120,23 @@ class Controls:
         return os.path.isfile(path) and os.access(path, os.R_OK)
 
     def color(self):
-        for i in range(self.table.rowCount()):
-            self.table.item(i, 0).setBackground(QBrush(QColor(45, 45, 45))) # dark grey
-        for item in self.playlist:
-            item.setBackground(QBrush(QColor(89, 145, 170))) # blue
-        item = self.playlist[self.curplaying]
-        item.setBackground(QBrush(QColor(117, 192, 149))) # green
+        print(self.curplaying)
+        for item in self.curlist:
+            self.color_item(item)
+            
+    def color_item(self, item):
+        found = False
+        for item2 in self.playlist:
+            if item.track.path == item2.track.path:
+                found = True
+        if found:
+            if item.track.path == self.playlist[self.curplaying].track.path:
+                item.setBackground(QBrush(QColor(117, 192, 149))) # green
+            else:
+                item.setBackground(QBrush(QColor(89, 145, 170))) # blue
+            self.mainwin.ui.TrackTable.update(self.mainwin.ui.TrackTable.indexFromItem(item))
+        else:
+            item.setBackground(QBrush(QColor(45, 45, 45))) # dark grey
 
     def stop(self):
         self.mainwin.ui.PlayPause.setIcon(QIcon('../assets/img/appbar.control.play.png'))

@@ -140,6 +140,7 @@ class MainWindow(QMainWindow):
             self.ui.TrackTable.setItem(row, 6, QTableWidgetItem(track.path))
             self.ui.TrackTable.setItem(row, 7, QTableWidgetItem(util.filesize_to_string(track.filesize)))
             self.ui.TrackTable.item(row, 0).track = track;
+            self.controls.color_item(self.ui.TrackTable.item(row, 0))
         for r in range(self.ui.TrackTable.rowCount()):
             for c in range(self.ui.TrackTable.columnCount()):
                 item = self.ui.TrackTable.item(r, c)

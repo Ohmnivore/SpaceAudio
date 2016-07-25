@@ -10,6 +10,7 @@
 * Open arbitrary files
 
 # TODO (eventually)
+* Keep highlight in between track navigation
 * Force the directory tree to repaint on change
 * Test on Linux and Mac
 * Go ham on the UI like a QA tester
