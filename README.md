@@ -3,7 +3,7 @@
 
 # Supported formats
 * .mp3
-* ogg vorbis (.ogg)
+* .ogg
 * .wav
 
 # TODO (immediate)

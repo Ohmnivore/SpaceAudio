@@ -63,6 +63,8 @@ class Scanner(QObject):
         self.info.ui.Ok.setText('Files found: ' + str(self.info.count))
         self.info.show()
         self.mainwin.ui.menubar.hide()
+        self.mainwin.setDisabled(True)
+        self.info.setDisabled(False)
 
         self.paths = paths
         self.mainwin.thread = ScannerThread(self.mainwin, self.paths, self.info)
@@ -77,6 +79,7 @@ class Scanner(QObject):
         self.info.close()
         self.mainwin.do_refresh = True
         self.mainwin.ui.menubar.show()
+        self.mainwin.setDisabled(False)
 
 
 class FileData(Track):
