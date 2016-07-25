@@ -68,7 +68,6 @@ class Controls:
                 self.curplaying = 0
             else:
                 self.curplaying = self.last_item.row()
-                print(self.curplaying)
             self.playlist = self.curlist[:]
             self.color()
             self.play()
@@ -120,7 +119,6 @@ class Controls:
         return os.path.isfile(path) and os.access(path, os.R_OK)
 
     def color(self):
-        print(self.curplaying)
         for item in self.curlist:
             self.color_item(item)
             
