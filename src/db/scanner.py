@@ -1,10 +1,7 @@
 import os, hashlib
-import threading
 from mutagen import File
 from mutagen import mp3
-from mutagen import flac
 from mutagen import oggvorbis
-from mutagen import mp4
 from db.track import *
 from ui.info import *
 from PyQt5.QtGui import *
@@ -15,36 +12,12 @@ from db.db_track import *
 from db.db_artist import *
 from db.db_album import *
 
-class Scanner:
-    def __init__(self, mainwin, paths):
+class ScannerThread(QThread):
+    def __init__(self, mainwin, paths, info):
+        super().__init__()
         self.mainwin = mainwin
         self.paths = paths
-
-        self.info = Popup(self.mainwin)
-        self.info.setWindowTitle('About')
-        self.info.setWindowFlags(Qt.Dialog | Qt.FramelessWindowHint)
-        self.info.ui.Text.setText('Scanning files... this may take a while.')
-        self.info.ui.Ok.setEnabled(False)
-        self.info.count = 0
-        self.info.ui.Ok.setText('Files found: ' + str(self.info.count))
-        self.info.show()
-
-        self.scan()
-
-    def scanfiles(self):
-        db_t = DBTrack()
-        db_a = DBArtist()
-        db_alb = DBAlbum()
-        for p in self.paths:
-            self.scan_dir(p, db_t, db_a, db_alb)
-        self.info.close()
-        self.mainwin.do_refresh = True
-        return
-
-    def scan(self):
-        t = threading.Thread(target=self.scanfiles)
-        t.setDaemon(True)
-        t.start()
+        self.info = info
 
     def scan_dir(self, path, db_t, db_a, db_alb):
         for dir_name, subdir_list, file_list in os.walk(path):
@@ -56,10 +29,55 @@ class Scanner:
     def scan_file(self, path, db_t, db_a, db_alb):
         base, ext = os.path.splitext(path)
         ext = ext.lower()
-        if ext == '.mp3' or ext == '.flac' or ext == '.ogg' or ext == '.m4a':
+        if ext == '.mp3' or ext == '.ogg' or ext == '.wav':
             self.info.count += 1
             self.info.ui.Ok.setText('Files found: ' + str(self.info.count))
             FileData(path, db_t, db_a, db_alb)
+
+    def run(self):
+        self.exec()
+    
+    def exec(self):
+        db_t = DBTrack()
+        db_a = DBArtist()
+        db_alb = DBAlbum()
+        for p in self.paths:
+            self.scan_dir(p, db_t, db_a, db_alb)
+        return 0
+
+
+class Scanner(QObject):
+    def __init__(self, mainwin):
+        super().__init__(mainwin)
+        self.mainwin = mainwin
+        self.paths = None
+        self.info = None
+
+    def scan(self, paths):
+        self.info = Popup(self.mainwin)
+        self.info.setWindowTitle('About')
+        self.info.setWindowFlags(Qt.Dialog | Qt.FramelessWindowHint)
+        self.info.ui.Text.setText('Scanning files... this may take a while.')
+        self.info.ui.Ok.setEnabled(False)
+        self.info.count = 0
+        self.info.ui.Ok.setText('Files found: ' + str(self.info.count))
+        self.info.show()
+        self.mainwin.ui.menubar.hide()
+
+        self.paths = paths
+        self.mainwin.thread = ScannerThread(self.mainwin, self.paths, self.info)
+        self.mainwin.thread.started.connect(self.thread_started)
+        self.mainwin.thread.finished.connect(self.thread_finished)
+        self.mainwin.thread.start()
+
+    def thread_started(self):
+        pass
+
+    def thread_finished(self):
+        self.info.close()
+        self.mainwin.do_refresh = True
+        self.mainwin.ui.menubar.show()
+
 
 class FileData(Track):
     def __init__(self, path, db_t, db_a, db_alb):
@@ -83,18 +101,12 @@ class FileData(Track):
                     self.artist = self.meta.tags['TPE1'].text[0]
                     self.album = self.meta.tags['TALB'].text[0]
                     self.track_number = int(self.meta.tags['TRCK'].text[0].split('/')[0])
-                elif isinstance(self.meta, flac.FLAC) or isinstance(self.meta, oggvorbis.OggVorbis):
+                elif isinstance(self.meta, oggvorbis.OggVorbis):
                     self.is_recognized = True
                     self.title = self.meta.tags['TITLE'][0]
                     self.artist = self.meta.tags['Artist'][0]
                     self.album = self.meta.tags['Album'][0]
                     self.track_number = int(self.meta.tags['TRACKNUMBER'][0].split('/')[0])
-                elif isinstance(self.meta, mp4.MP4):
-                    self.is_recognized = True
-                    self.title = self.meta.tags['©nam'][0]
-                    self.artist = self.meta.tags['©ART'][0]
-                    self.album = self.meta.tags['©alb'][0]
-                    self.track_number = int(self.meta.tags['trkn'][0][0])
             except:
                 pass
 

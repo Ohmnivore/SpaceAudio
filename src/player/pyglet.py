@@ -1,13 +1,10 @@
 import pyglet
 from player.player import *
-# import threading
 
 class Pyglet(Player):
     def __init__(self):
         Player.__init__(self)
         self.player = None
-        # self.thread = threading.Thread(target=pyglet.app.run)
-        # self.thread.start()
 
     def update(self):
         super().update()

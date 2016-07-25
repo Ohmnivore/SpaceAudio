@@ -3,7 +3,6 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from ui_base.ui_library import Ui_LibForm
 import os
-from db.scanner import *
 
 class Library(QDialog):
     def __init__(self, db_p, db_t, db_a, db_alb, parent):
@@ -26,7 +25,7 @@ class Library(QDialog):
     def do_scan(self):
         self.db_p.set_paths(self.model.checked)
         self.close()
-        Scanner(self.mainwin, self.model.checked)
+        self.mainwin.scanner.scan(self.model.checked)
 
     def show_tree(self):
         self.model = MyQDirModel(self.ui.Tree, self.db_p.get_paths())

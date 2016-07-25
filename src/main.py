@@ -2,14 +2,13 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from ui.mainwindow import *
 from ui.library import *
+from ui.process_style import *
 from db.db_path import *
 from db.db_track import *
 from db.db_artist import *
 from db.db_album import *
-from ui.process_style import *
 from util.logger import *
 import sys
-
 import os.path
 import traceback
 
@@ -34,18 +33,18 @@ def load_stylesheet(app, processor):
     app.setStyleSheet(processor.process(style) + processor.process(style_list) + processor.process(style_table))
 
 if __name__ == '__main__':
-    logger = Logger('SpaceAudio.log')
+    logger = Logger('SpaceAudio.log') # logger setup
     sys.stdout = logger
     sys.stderr = logger
     sys.excepthook = handle_exception
 
-    open('library.db', 'a').close()
+    open('library.db', 'a').close() # database setup
     db_p = DBPath()
     db_t = DBTrack()
     db_a = DBArtist()
     db_alb = DBAlbum()
 
-    app = QApplication(sys.argv)
+    app = QApplication(sys.argv) # app setup
     processor = StyleProcessor(open('../assets/vars.css', 'r').read())
     load_stylesheet(app, processor)
     w = MainWindow(db_p, db_t, db_a, db_alb)

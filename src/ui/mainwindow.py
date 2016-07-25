@@ -5,9 +5,10 @@ from ui.library import *
 from ui.popup import *
 from ui.controls import *
 from db.track import *
+from db.scanner import *
 from ui_base.ui_main import Ui_MainWindow
-import time
 from util import util
+import time
 
 class MainWindow(QMainWindow):
     def __init__(self, db_p, db_t, db_a, db_alb):
@@ -25,6 +26,10 @@ class MainWindow(QMainWindow):
         self.db_alb = db_alb
         self.refresh_lists(self.db_t, self.db_a, self.db_alb)
         self.do_refresh = False
+
+        self.scanner = Scanner(self)
+        self.thread = None
+        self.sw = None
 
         self.ui.TrackTable.setColumnWidth(0, 312)
         self.ui.TrackTable.setColumnWidth(1, 156)
@@ -88,11 +93,13 @@ class MainWindow(QMainWindow):
         self.lib.exec()
 
     def scan(self):
-        Scanner(self, self.db_p.get_paths())
+        # Scanner(self, self.db_p.get_paths())
+        self.scanner.scan(self.db_p.get_paths())
 
     def hard_scan(self):
         self.db_t.clear()
-        Scanner(self, self.db_p.get_paths())
+        # Scanner(self, self.db_p.get_paths())
+        self.scanner.scan(self.db_p.get_paths())
 
     def refresh_lists(self, db_t, db_a, db_alb):
         self.refresh_artists(db_a.get_artists())

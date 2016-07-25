@@ -11,3 +11,4 @@ __pycache__/
 *.log
 /SpaceAudioWin32
 *.zip
+/src/test.bat
