@@ -1,3 +1,6 @@
+# Screenshot
+![](screenshot.png)
+
 # Releases
 [https://github.com/Ohmnivore/SpaceAudio/releases](https://github.com/Ohmnivore/SpaceAudio/releases)
 
@@ -15,7 +18,7 @@
 # TODO (eventually)
 * Force the directory tree to repaint on change
 * Test on Linux and Mac
-* Go ham on the UI like a QA tester
+* QA test
 
 # Source dependencies
 * Python 32-bit (3.5.2)
